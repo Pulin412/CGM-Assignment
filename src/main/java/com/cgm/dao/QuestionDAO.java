@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 /*
     DAO layer to interact with database using Hibernate ORM.
  */
-public class QuestionDAO {
+public class QuestionDAO implements IQuestionDAO{
 
     SessionFactory sf;
 
@@ -37,6 +37,7 @@ public class QuestionDAO {
                 - It first checks if any question is already present in the database with the same question string.
                 - If the question is already present, message conveying the same returns to the user otherwise the question gets added in the Database.
          */
+    @Override
     public String saveQuestion(Question question) {
 
         Session session = beginTransaction();
@@ -53,6 +54,7 @@ public class QuestionDAO {
     /*
         Method to find the question object from the Database to get the set of answers.
      */
+    @Override
     public Question getAnswersFromDb(String question) {
         Session session = beginTransaction();
         Question questionFromDb = findQuestionByQuestionString(question, session);

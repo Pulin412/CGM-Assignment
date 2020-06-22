@@ -10,7 +10,7 @@ import org.h2.util.StringUtils;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class AnswerToEverythingService {
+public class AnswerToEverythingService implements IAnswerToEverythingService {
 
     private static Logger log = Logger.getLogger(AnswerToEverythingService.class.getName());
     private QuestionDAO questionDAO;
@@ -22,6 +22,7 @@ public class AnswerToEverythingService {
     /*
         Main method to process the input and return appropriate response.
      */
+    @Override
     public String evaluateInput(String[] input){
 
         log.info("ANSWER-TO-EVERYTHING :::::: received input");
