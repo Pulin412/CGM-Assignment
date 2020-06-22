@@ -4,16 +4,15 @@ import com.cgm.dao.QuestionDAO;
 import com.cgm.entity.Answer;
 import com.cgm.entity.Question;
 import com.cgm.util.AppUtil;
-import com.cgm.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import com.cgm.util.Constants;
+import org.h2.util.StringUtils;
 
 import java.util.Set;
 import java.util.logging.Logger;
 
 public class AnswerToEverythingService {
 
-    static Logger log = Logger.getLogger(AnswerToEverythingService.class.getName());
+    private static Logger log = Logger.getLogger(AnswerToEverythingService.class.getName());
     private QuestionDAO questionDAO;
 
     public AnswerToEverythingService(QuestionDAO questionDAO) {
@@ -26,16 +25,12 @@ public class AnswerToEverythingService {
     public String evaluateInput(String[] input){
 
         log.info("ANSWER-TO-EVERYTHING :::::: received input");
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        session.beginTransaction();
-
         /*
             Checking if the input is not null or empty i.e. without any question.
          */
         if(input == null || input.length == 0){
             log.warning("ANSWER-TO-EVERYTHING :::::: Null or empty input.");
-            return "Please enter question..";
+            return Constants.RESPONSE_NULL_INPUT;
         }
 
         int questionIndex = 0;
@@ -49,12 +44,14 @@ public class AnswerToEverythingService {
                 - As soon as '?' comes, break the loop and use the created string builder as question.
          */
         for (String word : input) {
-            questionBuilder.append(word).append(" ");
-            if(word.contains("?")){
-                isValidQuestion = true;
-                break;
+            if(!StringUtils.isNullOrEmpty(word)){
+                questionBuilder.append(word).append(" ");
+                if(word.contains("?")){
+                    isValidQuestion = true;
+                    break;
+                }
+                questionIndex++;
             }
-            questionIndex++;
         }
         String question = questionBuilder.toString().trim();
         log.info("ANSWER-TO-EVERYTHING :::::: incoming question - " + question);
@@ -72,7 +69,7 @@ public class AnswerToEverythingService {
                     If question is not present in the database, return with the generic answer.
                     If question is present in the database but there are no answers saved, return message to the user - "No answers saved.."
                  */
-                Question answerObj = questionDAO.getAnswersFromDb(question,session);
+                Question answerObj = questionDAO.getAnswersFromDb(question);
                 if(answerObj != null){
                     log.info("ANSWER-TO-EVERYTHING :::::: fetching answers for --  " + question);
                     Set<Answer> fromDbAnswers = answerObj.getAnswers();
@@ -80,24 +77,24 @@ public class AnswerToEverythingService {
                         fromDbAnswers.forEach(answer -> System.out.println("- " + answer.getAnswer()));
                         return "";
                     }else{
-                        return "No answers saved..";
+                        return Constants.RESPONSE_NO_ANSWERS_IN_DB;
                     }
                 }else{
-                    return "the answer to life, universe and everything is 42";
+                    return Constants.RESPONSE_DEFAULT_ANSWER;
                 }
             }else{
                 /*
                     If question is there with answers as well, save the question in the database.
                  */
-                return addQuestion(input, questionIndex, question, session);
+                return addQuestion(input, questionIndex, question);
             }
         }else{
-            throw new IllegalArgumentException("Question is invalid");
+            throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_INVALID_QUESTION);
         }
     }
 
-    private String addQuestion(String[] input, int questionIndex, String question, Session session) {
+    private String addQuestion(String[] input, int questionIndex, String question) {
         log.info("ANSWER-TO-EVERYTHING :::::: saving --  " + question);
-        return questionDAO.saveQuestion(AppUtil.questionMapper(input, questionIndex, question), session);
+        return questionDAO.saveQuestion(AppUtil.questionMapper(input, questionIndex, question));
     }
 }

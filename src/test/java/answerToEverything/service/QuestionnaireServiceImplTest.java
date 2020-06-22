@@ -1,5 +1,6 @@
 package answerToEverything.service;
 
+import answerToEverything.utils.TestHibernateUtil;
 import answerToEverything.utils.TestUtils;
 import com.cgm.dao.QuestionDAO;
 import com.cgm.entity.Question;
@@ -30,7 +31,7 @@ public class QuestionnaireServiceImplTest {
     @BeforeAll
     public void before() {
         MockitoAnnotations.initMocks(this);
-        session = sessionFactory.openSession();
+        session = TestHibernateUtil.getSessionFactory().openSession();
         Mockito.when(sessionFactory.openSession()).thenReturn(session);
     }
 
@@ -42,19 +43,19 @@ public class QuestionnaireServiceImplTest {
      */
     @Test
     void test_when_validQuestionWithAnswers_then_QuestionAdded(){
-        Mockito.when(questionDAO.saveQuestion(Mockito.any(Question.class), Mockito.any(Session.class))).thenReturn("question added successfully");
+        Mockito.when(questionDAO.saveQuestion(Mockito.any(Question.class))).thenReturn("question added successfully");
         Assertions.assertEquals("question added successfully",questionnaireService.evaluateInput(TestUtils.generate_ValidQuestionWithAnswers_Input()));
     }
 
     @Test
     void test_when_AskNewQuestion_then_PredefinedAnswerShouldBePrinted(){
-        Mockito.when(questionDAO.getAnswersFromDb(Mockito.any(String.class), Mockito.any(Session.class))).thenReturn(null);
+        Mockito.when(questionDAO.getAnswersFromDb(Mockito.any(String.class))).thenReturn(null);
         Assertions.assertEquals("the answer to life, universe and everything is 42",questionnaireService.evaluateInput(TestUtils.generate_AskQuestion_Input()));
     }
 
     @Test
     void test_when_AskOldQuestion_then_SavedAnswerShouldBePrinted(){
-        Mockito.when(questionDAO.getAnswersFromDb(Mockito.any(String.class), Mockito.any(Session.class))).thenReturn(TestUtils.getSavedQuestion());
+        Mockito.when(questionDAO.getAnswersFromDb(Mockito.any(String.class))).thenReturn(TestUtils.getSavedQuestion());
         Assertions.assertEquals("",questionnaireService.evaluateInput(TestUtils.generate_AskQuestion_Input()));
     }
 

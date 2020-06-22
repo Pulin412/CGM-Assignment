@@ -9,7 +9,7 @@ import java.util.Set;
 public class AppUtil {
 
     private static boolean validateInput(String input) {
-        return input.length() >= 255;
+        return input.length() >= Constants.QUESTION_MAX_CHARACTERS;
     }
 
     /*
@@ -17,10 +17,10 @@ public class AppUtil {
      */
     public static boolean isQuestionValid(boolean isValidQuestion, String question) {
         if(!isValidQuestion){
-            throw new IllegalArgumentException("Question format is incorrect");
+            throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_INCORRECT_FORMAT);
         }
         if(validateInput(question)){
-            throw new IllegalArgumentException("Length of Question exceeds 255 characters");
+            throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_QUESTION_CHARACTERS_EXCEED);
         }
         return true;
     }
@@ -35,7 +35,7 @@ public class AppUtil {
         for (int i = questionIndex + 1; i < input.length; i++) {
             String answerStr = input[i];
             if(AppUtil.validateInput(answerStr)){
-                throw new IllegalArgumentException("Length of Answer exceeds 255 characters");
+                throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_ANSWERS_CHARACTERS_EXCEED);
             }
             Answer answer = new Answer();
             answer.setAnswer(answerStr);
