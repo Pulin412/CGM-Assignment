@@ -14,8 +14,8 @@ A Java command line program that gives two options. One to ask a specific questi
 ### Response Messages
 - If the user asks a question which is not stored yet in the program, “the answer to life, universe and everything is 42” is printed.
 - If the user asks a question which is  stored in the program, all answers to that question are printed in a separate line.
-- If a question, which is already saved, is tried to save in the program with same/different answers, "Question is already present." is printed and question is discarded.
-- If any question with invalid format (without '?') or as null is passed to the program, "Question format is incorrect" , "Question is invalid" is printed.
+- If a question, which is already saved, is tried to save in the program with same/different answers, exception with message - "Question is already present." is thrown and question is discarded.
+- If any question with invalid format (without '?') or as null is passed to the program, exception with messages - "Question format is incorrect" , "Question is invalid" is thrown.
 - Correct format for question - 
     `<question>? “<answer1>” “<answer2>” “<answerX>”`
 
