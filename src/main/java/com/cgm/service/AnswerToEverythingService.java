@@ -1,6 +1,6 @@
 package com.cgm.service;
 
-import com.cgm.dao.QuestionDAO;
+import com.cgm.dao.IQuestionDAO;
 import com.cgm.entity.Answer;
 import com.cgm.entity.Question;
 import com.cgm.util.AppUtil;
@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 public class AnswerToEverythingService implements IAnswerToEverythingService {
 
     private static Logger log = Logger.getLogger(AnswerToEverythingService.class.getName());
-    private QuestionDAO questionDAO;
+    private IQuestionDAO questionDAO;
 
-    public AnswerToEverythingService(QuestionDAO questionDAO) {
+    public AnswerToEverythingService(IQuestionDAO questionDAO) {
         this.questionDAO = questionDAO;
     }
 
