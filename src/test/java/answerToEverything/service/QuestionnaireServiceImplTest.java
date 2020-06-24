@@ -94,4 +94,10 @@ public class QuestionnaireServiceImplTest {
         });
         Assertions.assertTrue(exception.getMessage().contains("Question format is incorrect"));
     }
+
+    @Test
+    void test_when_QuestionIsPresentWithoutAnyAnswerInDB_then_ThrowException(){
+        Mockito.when(questionDAO.getAnswersFromDb(Mockito.any(String.class))).thenReturn(TestUtils.getSavedQuestionWithoutAnswer());
+        Assertions.assertEquals("No answers saved..",questionnaireService.evaluateInput(TestUtils.generate_AskQuestion_Input()));
+    }
 }

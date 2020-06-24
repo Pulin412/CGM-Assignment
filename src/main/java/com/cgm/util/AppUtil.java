@@ -8,21 +8,11 @@ import java.util.Set;
 
 public class AppUtil {
 
-    private static boolean validateInput(String input) {
-        return input.length() >= Constants.QUESTION_MAX_CHARACTERS;
-    }
-
     /*
         Check if the question is valid or not.
      */
-    public static boolean isQuestionValid(boolean isValidQuestion, String question) {
-        if(!isValidQuestion){
-            throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_INCORRECT_FORMAT);
-        }
-        if(validateInput(question)){
-            throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_QUESTION_CHARACTERS_EXCEED);
-        }
-        return true;
+    public static boolean validateInput(String input) {
+        return input.length() <= Constants.QUESTION_MAX_CHARACTERS;
     }
 
     /*
@@ -34,7 +24,7 @@ public class AppUtil {
         Set<Answer> answerSet = new HashSet<>();
         for (int i = questionIndex + 1; i < input.length; i++) {
             String answerStr = input[i];
-            if(AppUtil.validateInput(answerStr)){
+            if(!AppUtil.validateInput(answerStr)){
                 throw new IllegalArgumentException(Constants.EXCEPTION_MESSAGE_ANSWERS_CHARACTERS_EXCEED);
             }
             Answer answer = new Answer();

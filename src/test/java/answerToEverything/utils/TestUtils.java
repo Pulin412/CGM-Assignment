@@ -40,4 +40,12 @@ public class TestUtils {
         question.setAnswers(answerSet);
         return question;
     }
+
+    public static Question getSavedQuestionWithoutAnswer(){
+        Question question = new Question();
+        question.setQuestionId(1);
+        question.setQuestion("What is Peters favorite food?");
+        question.setAnswers(null);
+        return question;
+    }
 }
