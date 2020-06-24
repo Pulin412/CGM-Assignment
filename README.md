@@ -46,5 +46,9 @@ Pass the arguments in " " with inner multiple arguments in ' ' -
 ```bash
 mvn exec:java -Dexec.args="'What is Peters favorite food?' 'Pizza' 'Spaghetti' 'Ice cream'"
 ``` 
-
 To exit the application, press **ctrl-c**.
+
+#### Code Coverage
+Once the application is clean/installed using Maven, JaCoCo code coverage can be browsed at -
+ 
+`Path - target/site/jacoco/index.html`
