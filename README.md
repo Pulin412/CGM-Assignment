@@ -1,5 +1,5 @@
 ## CGM-Assignment
-A Java command line program that gives two options. One to ask a specific question and the other option is to add questions and their answers
+A Java 8 command line program that gives two options. One to ask a specific question and the other option is to add questions and their answers
 
 ### About
 - Technologies used : Java, Hibernate, JUnit5
